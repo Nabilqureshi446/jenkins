@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('PULL'){
             steps{
-               echo 'hellow'
+               echo 'hellow world'
                         }
         }
         stage ('BUILD'){
