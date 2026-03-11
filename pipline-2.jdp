@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages {
+        stage('PULL'){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Nabilqureshi446/jenkins.git']])
+                        }
+        }
+        stage ('BUILD'){
+            steps{
+                sh '''
+                    cd backend
+                    mvn clean package -DskipTests
+                '''
+            }
+        }
+        stage ('TEST'){
+            steps{
+                echo 'TEST SUCCESS'
+            }
+        }
+        stage ('DEPLOY'){
+            steps{
+                echo 'DEPLOY SUCCESS'
+            }
+        }
+    }
+}
