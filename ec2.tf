@@ -5,7 +5,7 @@ provider "aws" {
 # Key Pair (optional if you already have one)
 resource "aws_key_pair" "deployer" {
   key_name   = "3tier"
-  public_key = file("C:/Users/hp/Downloads/id_rsa.pub")
+  public_key = file("C:/Users/hp/Downloads/3tier.pub")
 }
 
 # Security Group
