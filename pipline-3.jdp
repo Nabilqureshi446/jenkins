@@ -4,7 +4,7 @@ pipeline {
     stages{
         stage('PULL'){
             steps{
-                git branch: 'main', url: ' https://github.com/Nabilqureshi446/jenkins/blob/main/ec2.tf.git'
+                git branch: 'main', url: ' https://github.com/Nabilqureshi446/jenkins.git'
             }
         }
         stage('PLAN'){
