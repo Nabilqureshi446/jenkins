@@ -3,15 +3,12 @@ pipeline {
     stages {
         stage('PULL'){
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Nabilqureshi446/jenkins.git']])
+               echo 'hellow world'
                         }
         }
         stage ('BUILD'){
             steps{
-                sh '''
-                    cd backend
-                    mvn clean package -DskipTests
-                '''
+                echo 'build'
             }
         }
         stage ('TEST'){
