@@ -10,9 +10,9 @@ pipeline {
         stage('PLAN'){
             steps{
                 sh'''
-                cd infra/radison-hms-infra
+            
                 terraform init
-                terraform plan --var-file=vars/staging.tfvars
+                terraform plan 
                 '''
             }
         }
@@ -24,9 +24,9 @@ pipeline {
         stage('APPLY'){
             steps{
                 sh'''
-                cd infra/radison-hms-infra
+                
                 terraform init
-                terraform apply -auto-approve --var-file=vars/staging.tfvars
+                terraform apply -auto-approve 
                 '''
             }
         }
