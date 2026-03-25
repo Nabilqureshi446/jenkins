@@ -1,56 +1,29 @@
 pipeline {
     agent any
-
-    environment {
-        AWS_REGION = "ap-south-1"
-    }
-
-    stages {
-
-        stage('Checkout Code') {
-            steps {
+    stages{
+        stage('PULL'){
+            steps{
                 git branch: 'main', url: 'https://github.com/Nabilqureshi446/3-tier-terraform.git'
             }
         }
-
-       stage('Terraform Init') {
-    steps {
-        dir('3-TIER-TERRAFORM') {
-            sh 'terraform init'
-        }
-    }
-}
-
-stage('Terraform Validate') {
-    steps {
-        dir('3-TIER-TERRAFORM') {
-            sh 'terraform validate'
-        }
-    }
-}
-
-stage('Terraform Plan') {
-    steps {
-        dir('3-TIER-TERRAFORM') {
-            sh 'terraform plan '
-        }
-    }
-}
-
-stage('Terraform Apply') {
-    steps {
-        dir('3-TIER-TERRAFORM') {
-            sh 'terraform apply -auto-approve tfplan'
-        }
-    }
-}
-
- stage('Show Outputs') {  
-    steps {
-        dir('3-TIER-TERRAFORM') {
-            sh 'terraform output'
+        stage('PLAN'){
+            steps{
+                sh'''
+                
+                terraform init
+                terraform plan --var-file=vars/staging.tfvars
+                '''
             }
         }
-    }       
-}
+
+        stage('APPLY'){
+            steps{
+                sh'''
+                cd infra/radison-hms-infra
+                terraform init
+                terraform apply -auto-approve --var-file=vars/staging.tfvars
+                '''
+            }
+        }
+    }
 }
