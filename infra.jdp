@@ -1,32 +1,55 @@
 pipeline {
-    agent any
-    stages{
-        stage('PULL'){
-            steps{
-                git branch: 'main', url: ' https://github.com//Nabilqureshi446/3-tier-terraform'}
-        }
-        stage('PLAN'){
-            steps{
-                sh'''
-                cd module
-                terraform init
-                terraform plan --var-file=vars/staging.tfvars
-                '''
-            }
-        }
-        stage('APPROVAL'){
-            steps{
-                input 'Wait for approval'
-            }
-        }
-        stage('APPLY'){
-            steps{
-                sh'''
-                cd module
-                terraform init
-                terraform apply -auto-approve --var-file=vars/staging.tfvars
-                '''
-            }
+agent any
+
+```
+environment {
+    AWS_REGION = 'ap-south-1'
+    TF_IN_AUTOMATION = 'true'
+}
+
+stages {
+
+    stage('Clone Repo') {
+        steps {
+            git branch: 'main', url: 'https://github.com/Nabilqureshi446/3-tier-terraform.git'
         }
     }
+
+    stage('Terraform Init') {
+        steps {
+            sh 'terraform init'
+        }
+    }
+
+    stage('Terraform Validate') {
+        steps {
+            sh 'terraform validate'
+        }
+    }
+
+    stage('Terraform Plan') {
+        steps {
+            sh 'terraform plan -out=tfplan'
+        }
+    }
+
+    stage('Terraform Apply') {
+        steps {
+            input message: 'Do you want to apply Terraform changes?'
+            sh 'terraform apply -auto-approve tfplan'
+        }
+    }
+
+}
+
+post {
+    success {
+        echo 'Infrastructure deployed successfully 🚀'
+    }
+    failure {
+        echo 'Pipeline failed ❌'
+    }
+}
+```
+
 }
